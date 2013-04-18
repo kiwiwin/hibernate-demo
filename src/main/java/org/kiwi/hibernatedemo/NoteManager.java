@@ -10,9 +10,81 @@ public class NoteManager {
 
     public static void main(String[] args) {
         initSessionFactory();
-        List<Note> notes = getNotes();
-        for (Note note : notes) {
-            System.out.println("Q: " + note.getQuestion() + ", A: " + note.getAnswer());
+    }
+
+    private static void deleteNote(Note note) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+
+        try {
+            transaction = session.beginTransaction();
+            session.delete(note);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.err.println("delete note failed: " + e.getMessage());
+        } finally {
+            session.close();
+        }
+    }
+
+    private static void updateNote(Note note) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+
+        try {
+            transaction = session.beginTransaction();
+            session.saveOrUpdate(note);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.err.println("update note failed: " + e.getMessage());
+        } finally {
+            session.close();
+        }
+    }
+
+    private static void printNote(Note note) {
+        System.out.println("Q: " + note.getQuestion() + ", A: " + note.getAnswer());
+    }
+
+    private static Note getNote(Integer id) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        Note note = null;
+        try {
+            transaction = session.beginTransaction();
+            note = (Note) session.get(Note.class, id);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.err.println("get note failed: " + e.getMessage());
+        } finally {
+            session.close();
+        }
+        return note;
+    }
+
+    private static void insertNote(Note note) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.save(note);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.err.println("insert note failed: " + e.getMessage());
+        } finally {
+            session.close();
         }
     }
 

@@ -13,7 +13,7 @@ public class Note {
         setAnswer(answer);
     }
 
-    private void setAnswer(String answer) {
+    public void setAnswer(String answer) {
         this.answer = answer;
     }
 
