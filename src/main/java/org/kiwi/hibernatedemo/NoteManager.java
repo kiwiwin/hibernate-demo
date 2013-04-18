@@ -10,6 +10,48 @@ public class NoteManager {
 
     public static void main(String[] args) {
         initSessionFactory();
+
+        //code goes from here
+    }
+
+    private static void deleteNote(Integer id) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+
+        try {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("delete from Note where id = ?");
+            query.setParameter(0, id);
+            query.executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.err.println("delete note failed: " + e.getMessage());
+        } finally {
+            session.close();
+        }
+    }
+
+    private static void updateAnswer(Integer id, String answer) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+
+        try {
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("update Note set answer = ? where id = ?");
+            query.setParameter(0, answer);
+            query.setParameter(1, id);
+            query.executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            session.close();
+        }
     }
 
     private static void deleteNote(Note note) {
