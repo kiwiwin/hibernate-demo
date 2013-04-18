@@ -33,7 +33,11 @@ public class Note {
         return id;
     }
 
-    public void setId(Integer id) {
+    private void setId(Integer id) {
         this.id = id;
+    }
+
+    public void display() {
+        System.out.println("Q: " + getQuestion() + ", A: " + getAnswer());
     }
 }

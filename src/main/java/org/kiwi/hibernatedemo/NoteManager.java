@@ -1,20 +1,17 @@
 package org.kiwi.hibernatedemo;
 
 import org.hibernate.*;
-import org.hibernate.cfg.*;
 
 import java.util.*;
 
 public class NoteManager {
-    private static SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
-    public static void main(String[] args) {
-        initSessionFactory();
-
-        //code goes from here
+    public NoteManager(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-    private static void deleteNote(Integer id) {
+    private void deleteNote(Integer id) {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
 
@@ -34,7 +31,7 @@ public class NoteManager {
         }
     }
 
-    private static void updateAnswer(Integer id, String answer) {
+    private void updateAnswer(Integer id, String answer) {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
 
@@ -54,7 +51,7 @@ public class NoteManager {
         }
     }
 
-    private static void deleteNote(Note note) {
+    private void deleteNote(Note note) {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
 
@@ -72,7 +69,7 @@ public class NoteManager {
         }
     }
 
-    private static void updateNote(Note note) {
+    private void updateNote(Note note) {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
 
@@ -90,11 +87,7 @@ public class NoteManager {
         }
     }
 
-    private static void printNote(Note note) {
-        System.out.println("Q: " + note.getQuestion() + ", A: " + note.getAnswer());
-    }
-
-    private static Note getNote(Integer id) {
+    private Note getNote(Integer id) {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
         Note note = null;
@@ -113,7 +106,7 @@ public class NoteManager {
         return note;
     }
 
-    private static void insertNote(Note note) {
+    private void insertNote(Note note) {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
         try {
@@ -130,7 +123,7 @@ public class NoteManager {
         }
     }
 
-    private static List<Note> getNotes() {
+    public List<Note> getNotes() {
         List<Note> notes = null;
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
@@ -146,13 +139,5 @@ public class NoteManager {
             session.close();
         }
         return notes;
-    }
-
-    private static void initSessionFactory() {
-        try {
-            sessionFactory = new Configuration().configure().buildSessionFactory();
-        } catch (HibernateException e) {
-            System.err.println("failed to get the session factory, REASON: " + e.getMessage());
-        }
     }
 }
