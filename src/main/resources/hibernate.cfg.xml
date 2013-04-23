@@ -16,5 +16,6 @@
         <property name="show_sql">true</property>
 
         <mapping resource="org/kiwi/hibernatedemo/Note.hbm.xml"/>
+        <mapping resource="org/kiwi/hibernatedemo/Person.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

@@ -1,5 +1,7 @@
 CREATE TABLE Note (
   id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  person_id INT(11) NOT NULL,
   question VARCHAR(100) NOT NULL,
-  answer VARCHAR(100) NOT NULL
+  answer VARCHAR(100) NOT NULL,
+  FOREIGN KEY (person_id) REFERENCES person(id)
 )

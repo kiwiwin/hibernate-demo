@@ -7,10 +7,25 @@ import java.util.*;
 
 public class QApp {
     public static void main(String[] args) {
-        NoteManager noteManager = new NoteManager(initSessionFactory());
-        List<Note> notes = noteManager.getNotes();
-        for (Note note : notes) {
-            note.display();
+        SessionFactory sessionFactory = initSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            Person person = (Person) session.get(Person.class, 1);
+            Set notes = person.getNotes();
+            for (Object obj : notes) {
+                Note note = (Note) obj;
+                note.display();
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.err.println("failed to load person message");
+        } finally {
+            session.close();
         }
     }
 
